@@ -54,7 +54,6 @@ void startTtimer({required ColorsLight colorsLight}) {
           break;
         default:
       }
-      //print('Скоро загориться красный сигнал!');
     }
     if ((greemTimer - timer.tick) == 1) {
       switch (colorsLight) {

@@ -1,13 +1,25 @@
-import 'dart:async';
+//!Guess Numbers "Comparisons of guessing"
 import 'dart:io';
-
 import 'dart:math';
+import 'print_color.dart';
 
 void main(List<String> arguments) {
-  print('Выберите игровой режим:n Битва за алгоритмы');
-  countTries();
+void main(List<String> arguments) {
+  printBlue('Выберите игровой режим:');
+  printRed('   1 - Число загадываете вы');
+  printCyan('   2 - Битва за алгоритмов');
+  printRed('   3 - Человек против машины');
+  int choice = int.parse(stdin.readLineSync()!);
+  if (choice == 1) {
+    printRed('К сожилению, данный режим временно не доступно');
+  } else if (choice == 2) {
+    countTries();
+  } else if (choice == 3) {
+    printRed('К сожилению, данный режим временно не доступно');
+  }
 }
 
+//Проверяем какой способ Лучше и Быстрее
 void countTries() {
   List<int> test = [];
   Random random = Random();
@@ -20,98 +32,98 @@ void countTries() {
   List methodOne = [];
   List methodTwo = [];
   for (int i = 0; i < test.length; i++) {
-    methodOne.add(guessNumber(test[i]));
-    methodTwo.add(guessNumber2(test[i]));
+    methodOne.add(user(test[i]));
+    methodTwo.add(user_v2(test[i]));
   }
   for (int i = 0; i < test.length; i++) {
     sumOne += methodOne[i];
     sumTwo += methodTwo[i];
-
-    print(
-        'Шаги, который получил Первый алгоритм${test[i]} в ${methodOne[i]} Шаги, который получил Второй алгоритм ${test[i]} в ${methodTwo[i]} шаги ');
+    printBlue('Получил Первый алгоритм ${test[i]} за ${methodOne[i]} шаги,');
+    printMagenta('Получил Второй алгоритм ${test[i]} в ${methodTwo[i]} шаги');
   }
   if (sumTwo < sumOne) {
-    print('\n\nВторой алгоритм выигрывает');
+    printCyan('\nВторой алгоритм выигрывает');
   } else {
-    print('\n\nПервый алгоритм выигрывает');
+    printCyan('\nПервый алгоритм выигрывает');
   }
-  print('\nПервый алгоритм взял $sumOne пытается\n');
-  print('\nВторой алгоритм взял $sumTwo пытается\n');
+  print(
+      'Первый алгоритм взял $sumOne пытается\nВторой алгоритм взял $sumTwo пытается');
 }
 
-int guessNumber(int testNumber1) {
-  int a = 50;
-  int a2 = 50;
-  //print('Загадайте число:');
-  //int number = int.parse(stdin.readLineSync()!);
-  int b = 0;
-  int tryCount = 0;
-  void guess() {
-    a2 = (a2 / 2).round();
-    //print('Загаданное число это $a?\n1) Да\n2)Больше\n3)Меньше');
-    tryCount++;
-    if (testNumber1 > a) {
-      a = a + a2;
-      if (a > 100) {
-        a = 100;
-      }
-    } else if (testNumber1 < a) {
-      a = a - a2;
-      if (a > 100) {
-        a = 100;
-      }
-      /*b = int.parse(stdin.readLineSync()!);
-    a2 = (a2 / 2).round();
-    if (b == 2) {
-      a = a + a2;
-      if (a > 100) {
-        a = 100;
-      }
-    } else if (b == 3) {
-      a = a - a2;
-      if (a < 0) {
-        a = 0;
-      }
-    }*/
+//Первый алгоритм угадывания, когда число загадываете "Вы"
+user(int testNumber) {
+  // printBlue('Загадайте целое число от 0 до 100\n');
+  // printCyan('Если ваше число:\n   Больше - нажмите 1');
+  // printCyan('   Меньше - нажмите 2');
+  // printCyan('   Равно  - нажмите 3');
+  int min = 0;
+  int max = 100;
+  int try_count = 0;
+  int trys_user = 0;
+  //String input_user = '';
+  do {
+    trys_user++;
+    try_count = ((min + max) / 2).round();
+    //printBlue('\nВаше число $try_count?');
+    //input_user = stdin.readLineSync()!;
+    if (testNumber == try_count) {
+      // printGreen('Я угадал число $try_count за $trys_user попыток\n\n');
+      //break;
     }
-  }
+    // if (try_count == min + 1 || try_count == max) {
+    // printYellow('Вы мухлевщик! Я с вами больше не играю!\nИгра окончена!');
+    // exit(200);
+    // }
+    else {
+      if (testNumber > try_count) {
+        min = try_count;
+      } else if (testNumber < try_count) {
+        max = try_count;
+      } // else {
+      // printRed('Ошибка! Ваше число вне диапазона 1 - 3');
+      // }
+    }
+  } while (testNumber != try_count);
+  return trys_user;
+}
+
+//Второй алгоритм угадывания, когда число загадываете "Вы"
+user_v2(int testNumber) {
+  // printBlue('Загадайте целое число от 0 до 100\n');
+  // printCyan('Если ваше число:');
+  // printCyan('   Больше - нажмите 1');
+  // printCyan('   Меньше - нажмите 2');
+  // printCyan('   Равно  - нажмите 3');
+  Random random = new Random();
+  int min = 0;
+  int max = 100;
+  int guess = 0;
+  int trys_user_v2 = 0;
+  // String input_user_v2 = '';
 
   do {
-    guess();
-  } while (testNumber1 != a);
-  return tryCount;
-}
-
-int guessNumber2(int testNumber2) {
-  String a = testNumber2.toString();
-  List b = a.split('');
-  int count = 0;
-  void guess(int g1) {
-    int a = 5;
-    int b = 2;
-    b = (b / 2).round();
-    do {
-      if (g1 > a) {
-        a = a + b;
-        if (a > 9) {
-          a = 9;
-        }
-      } else if (g1 < a) {
-        a = a - b;
-        if (a <= 0) {
-          a = 0;
-        }
+    trys_user_v2++;
+    guess = min + random.nextInt(max - min);
+    // printBlue('\nВаше число $guess?');
+    // input_user_v2 = stdin.readLineSync()!;
+    if (testNumber == guess) {
+      // printGreen('Я угадал число $guess за $trys_user_v2 попыток\n\n');
+      // break;
+    }
+    // if (guess == min + 1 && guess == max - 1 || guess == 0) {
+    //   printYellow('Вы мухлевщик! Я с вами больше не играю!\nИгра окончена!');
+    //   exit(200);
+    // }
+    else {
+      if (testNumber > guess) {
+        min = guess;
+      } else if (testNumber < guess) {
+        max = guess;
       }
-      count++;
-    } while (g1 != a);
-  }
-
-  count++;
-  if (testNumber2 <= 9) {
-    guess(testNumber2);
-  } else if (testNumber2 > 10) {
-    guess(int.parse(b[0]));
-    guess(int.parse(b[1]));
-  }
-  return count;
+      // else {
+      //   print('Ошибка! Ваше число вне диапазона 1 - 3');
+      // }
+    }
+  } while (testNumber != guess);
+  return trys_user_v2;
 }
